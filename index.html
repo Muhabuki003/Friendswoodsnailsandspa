@@ -6,8 +6,248 @@
     <title>Friendswood Nails & Spa</title>
     <script type="module" crossorigin src="./assets/index-CPf1oju8.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CWqVtSzb.css">
+    <style>
+      :root {
+        --fws-gold: #C9A84C;
+        --fws-gold-light: #E8D28A;
+      }
+
+      .fws-fx-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        overflow: hidden;
+        will-change: transform;
+      }
+
+      .fws-glitter {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--fws-gold-light) 0%, var(--fws-gold) 55%, transparent 75%);
+        box-shadow: 0 0 6px var(--fws-gold-light), 0 0 14px var(--fws-gold);
+        opacity: 0;
+        animation: fws-float-up linear forwards;
+        filter: blur(0.3px);
+      }
+
+      .fws-glitter.fws-star::before,
+      .fws-glitter.fws-star::after {
+        content: "";
+        position: absolute;
+        inset: -3px;
+        background: inherit;
+        border-radius: inherit;
+        box-shadow: inherit;
+        transform: rotate(45deg);
+      }
+
+      @keyframes fws-float-up {
+        0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.6); opacity: 0; }
+        12%  { opacity: 0.95; }
+        50%  { transform: translate3d(var(--fws-drift, 30px), -45vh, 0) rotate(180deg) scale(1); }
+        100% { transform: translate3d(calc(var(--fws-drift, 30px) * 2), -110vh, 0) rotate(360deg) scale(0.4); opacity: 0; }
+      }
+
+      .fws-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.35;
+        mix-blend-mode: screen;
+        animation: fws-drift 18s ease-in-out infinite alternate;
+      }
+      .fws-orb-1 { width: 320px; height: 320px; top: 10%; left: -80px;  background: radial-gradient(circle, rgba(232,210,138,0.6), transparent 65%); animation-duration: 22s; }
+      .fws-orb-2 { width: 260px; height: 260px; top: 55%; right: -60px; background: radial-gradient(circle, rgba(201,168,76,0.55), transparent 65%); animation-duration: 26s; animation-delay: -6s; }
+      .fws-orb-3 { width: 220px; height: 220px; bottom: 5%; left: 35%;  background: radial-gradient(circle, rgba(245,240,232,0.45), transparent 65%); animation-duration: 30s; animation-delay: -12s; }
+
+      @keyframes fws-drift {
+        0%   { transform: translate(0, 0) scale(1); }
+        50%  { transform: translate(40px, -60px) scale(1.1); }
+        100% { transform: translate(-30px, 30px) scale(0.95); }
+      }
+
+      .fws-spark {
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #fff 0%, var(--fws-gold-light) 40%, var(--fws-gold) 70%, transparent 80%);
+        box-shadow: 0 0 8px var(--fws-gold-light);
+        pointer-events: none;
+        z-index: 9999;
+        animation: fws-spark-fade 700ms ease-out forwards;
+      }
+      @keyframes fws-spark-fade {
+        0%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(0.2) translateY(14px); opacity: 0; }
+      }
+
+      .fws-progress {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: transparent;
+        z-index: 10000;
+        pointer-events: none;
+      }
+      .fws-progress::after {
+        content: "";
+        display: block;
+        height: 100%;
+        width: var(--fws-progress, 0%);
+        background: linear-gradient(90deg, transparent, var(--fws-gold-light), var(--fws-gold), var(--fws-gold-light), transparent);
+        box-shadow: 0 0 12px var(--fws-gold);
+        transition: width 80ms linear;
+      }
+
+      .fws-reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 800ms cubic-bezier(.2,.7,.2,1), transform 800ms cubic-bezier(.2,.7,.2,1);
+        will-change: opacity, transform;
+      }
+      .fws-reveal.fws-in {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      #root img { transition: transform 600ms cubic-bezier(.2,.7,.2,1), filter 400ms ease; }
+      #root img:hover { transform: scale(1.03); filter: brightness(1.05) saturate(1.1); }
+
+      #root a, #root button { transition: transform 250ms ease, box-shadow 250ms ease, color 250ms ease, background-color 250ms ease; }
+      #root a:hover, #root button:hover { transform: translateY(-1px); }
+
+      @media (prefers-reduced-motion: reduce) {
+        .fws-fx-layer, .fws-spark, .fws-progress { display: none !important; }
+        .fws-reveal { opacity: 1; transform: none; transition: none; }
+        #root img:hover { transform: none; filter: none; }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+    <div class="fws-progress" aria-hidden="true"></div>
+    <div class="fws-fx-layer" aria-hidden="true">
+      <div class="fws-orb fws-orb-1"></div>
+      <div class="fws-orb fws-orb-2"></div>
+      <div class="fws-orb fws-orb-3"></div>
+    </div>
+    <script>
+      (function () {
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) return;
+
+        var fxLayer = document.querySelector('.fws-fx-layer');
+        var progress = document.querySelector('.fws-progress');
+
+        function spawnGlitter() {
+          if (document.hidden) return;
+          var g = document.createElement('span');
+          g.className = 'fws-glitter';
+          var size = 3 + Math.random() * 6;
+          var drift = (Math.random() * 120 - 60).toFixed(0) + 'px';
+          var duration = (8 + Math.random() * 8).toFixed(1) + 's';
+          var leftPct = Math.random() * 100;
+          g.style.width = size + 'px';
+          g.style.height = size + 'px';
+          g.style.left = leftPct + '%';
+          g.style.bottom = '-20px';
+          g.style.setProperty('--fws-drift', drift);
+          g.style.animationDuration = duration;
+          g.style.animationDelay = (Math.random() * 1.2).toFixed(2) + 's';
+          fxLayer.appendChild(g);
+          var ttl = parseFloat(duration) * 1000 + 1500;
+          setTimeout(function () { g.remove(); }, ttl);
+        }
+
+        var glitterInterval = setInterval(spawnGlitter, 380);
+        for (var i = 0; i < 12; i++) setTimeout(spawnGlitter, i * 90);
+
+        var lastSpark = 0;
+        document.addEventListener('mousemove', function (e) {
+          var now = performance.now();
+          if (now - lastSpark < 50) return;
+          lastSpark = now;
+          var s = document.createElement('span');
+          s.className = 'fws-spark';
+          s.style.left = e.clientX + 'px';
+          s.style.top = e.clientY + 'px';
+          var jitterX = (Math.random() * 14 - 7).toFixed(1) + 'px';
+          var jitterY = (Math.random() * 14 - 7).toFixed(1) + 'px';
+          s.style.transform = 'translate(calc(-50% + ' + jitterX + '), calc(-50% + ' + jitterY + '))';
+          document.body.appendChild(s);
+          setTimeout(function () { s.remove(); }, 750);
+        }, { passive: true });
+
+        document.addEventListener('click', function (e) {
+          for (var i = 0; i < 10; i++) {
+            (function (k) {
+              setTimeout(function () {
+                var s = document.createElement('span');
+                s.className = 'fws-spark';
+                var angle = (Math.PI * 2 * k) / 10;
+                var dist = 18 + Math.random() * 22;
+                s.style.left = (e.clientX + Math.cos(angle) * dist) + 'px';
+                s.style.top = (e.clientY + Math.sin(angle) * dist) + 'px';
+                document.body.appendChild(s);
+                setTimeout(function () { s.remove(); }, 750);
+              }, k * 18);
+            })(i);
+          }
+        }, { passive: true });
+
+        function updateProgress() {
+          var doc = document.documentElement;
+          var max = (doc.scrollHeight - doc.clientHeight) || 1;
+          var pct = Math.min(100, Math.max(0, (window.scrollY / max) * 100));
+          progress.style.setProperty('--fws-progress', pct.toFixed(2) + '%');
+        }
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+          if (!ticking) {
+            window.requestAnimationFrame(function () { updateProgress(); ticking = false; });
+            ticking = true;
+          }
+        }, { passive: true });
+        updateProgress();
+
+        function attachReveals() {
+          var nodes = document.querySelectorAll('#root section, #root section > div, #root section h1, #root section h2, #root section h3, #root section img');
+          if (!('IntersectionObserver' in window) || !nodes.length) return;
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) {
+                en.target.classList.add('fws-in');
+                io.unobserve(en.target);
+              }
+            });
+          }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+          nodes.forEach(function (n) {
+            if (n.classList.contains('fws-reveal')) return;
+            n.classList.add('fws-reveal');
+            io.observe(n);
+          });
+        }
+
+        var revealTimer = setInterval(function () {
+          if (document.querySelectorAll('#root section').length) {
+            attachReveals();
+            clearInterval(revealTimer);
+          }
+        }, 250);
+        setTimeout(function () { clearInterval(revealTimer); }, 8000);
+
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) {
+            clearInterval(glitterInterval);
+          } else {
+            glitterInterval = setInterval(spawnGlitter, 380);
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
