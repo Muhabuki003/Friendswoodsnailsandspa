@@ -125,6 +125,99 @@
         .fws-reveal { opacity: 1; transform: none; transition: none; }
         #root img:hover { transform: none; filter: none; }
       }
+
+      /* ── Real Reviews Override ── */
+      .fws-reviews-wrap {
+        position: relative;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 80px 24px 72px;
+      }
+      .fws-reviews-eyebrow {
+        font-size: 10px;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: #C9A84C;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+      .fws-reviews-heading {
+        color: #fff;
+        font-size: clamp(2rem, 5vw, 2.75rem);
+        font-weight: 700;
+        letter-spacing: .04em;
+        font-family: 'Playfair Display', Georgia, serif;
+        line-height: 1.1;
+        margin: 0 0 8px;
+      }
+      .fws-reviews-sub {
+        color: #9CA3AF;
+        font-size: 1rem;
+        margin: 0 0 48px;
+      }
+      .fws-reviews-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+      }
+      .fws-review-card {
+        background: rgba(255,255,255,.03);
+        border: 1px solid rgba(201,168,76,.15);
+        border-radius: 14px;
+        padding: 28px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        transition: border-color 300ms ease, box-shadow 300ms ease;
+      }
+      .fws-review-card:hover {
+        border-color: rgba(201,168,76,.4);
+        box-shadow: 0 0 28px rgba(201,168,76,.07);
+      }
+      .fws-review-stars {
+        display: flex;
+        gap: 3px;
+      }
+      .fws-review-stars svg { width: 14px; height: 14px; }
+      .fws-review-text {
+        color: #D1D5DB;
+        font-size: .95rem;
+        line-height: 1.65;
+        flex: 1;
+      }
+      .fws-review-author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .fws-review-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #C9A84C, #E8D28A);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: .85rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        flex-shrink: 0;
+      }
+      .fws-review-name { color: #fff; font-size: .9rem; font-weight: 600; }
+      .fws-review-source { color: #6B7280; font-size: .78rem; margin-top: 1px; }
+      .fws-reviews-badge {
+        margin-top: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: #9CA3AF;
+        font-size: .85rem;
+      }
+      .fws-reviews-badge strong { color: #C9A84C; }
     </style>
   </head>
   <body>
@@ -135,67 +228,168 @@
       <div class="fws-orb fws-orb-2"></div>
       <div class="fws-orb fws-orb-3"></div>
     </div>
-    <script>
-      /* Fresha embedded booking – iframe */
-      (function () {
-        var FRESHA_SRC = "https://www.fresha.com/book-now/friendswood-nails-spa-south-friendswood-drive-friendswood-7xn48r";
 
-        function buildContent() {
-          var html = '';
-          // decorative orbs matching site palette
-          html += '<div style="position:absolute;top:0;right:0;width:384px;height:384px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,168,76,.06) 0%,transparent 70%);transform:translate(30%,-30%)"></div>';
-          html += '<div style="position:absolute;bottom:0;left:0;width:320px;height:320px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,168,76,.04) 0%,transparent 70%);transform:translate(-30%,30%)"></div>';
-          html += '<div style="position:relative;z-index:10;max-width:960px;margin:0 auto;padding:80px 24px 64px">';
-          html +=   '<div style="margin-bottom:40px">';
-          html +=     '<div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:#C9A84C">';
-          html +=       '<svg width="12" height="12" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>';
-          html +=       ' Online Booking';
-          html +=     '</div>';
-          html +=     '<h2 style="color:#fff;font-size:2.75rem;font-weight:700;letter-spacing:.04em;margin:0 0 12px;font-family:\'Playfair Display\',Georgia,serif;line-height:1.1">BOOK YOUR<br>APPOINTMENT</h2>';
-          html +=     '<p style="font-size:1.1rem;color:#9CA3AF;margin:0">Book directly below — no phone call required.</p>';
-          html +=   '</div>';
-          html +=   '<div style="border-radius:14px;overflow:hidden;border:1px solid rgba(201,168,76,.2);box-shadow:0 0 40px rgba(201,168,76,.06)">';
-          html +=     '<iframe';
-          html +=       ' src="' + FRESHA_SRC + '"';
-          html +=       ' title="Book at Friendswood Nails &amp; Spa"';
-          html +=       ' width="100%"';
-          html +=       ' height="750"';
-          html +=       ' style="display:block;border:none;width:100%"';
-          html +=       ' loading="lazy"';
-          html +=       ' allow="payment; camera; microphone"';
-          html +=     '></iframe>';
-          html +=   '</div>';
-          html +=   '<p style="margin-top:18px;text-align:center;color:#9CA3AF;font-size:.85rem">';
-          html +=     'Prefer to call? <a href="tel:+18324819070" style="color:#C9A84C;text-decoration:underline">832-481-9070</a>';
-          html +=   '</p>';
-          html += '</div>';
-          return html;
+    <!-- ── Real Reviews Injector ── -->
+    <script>
+      (function () {
+        var REVIEWS = [
+          {
+            name: "Jennifer M.",
+            initials: "JM",
+            text: "YEN always does an awesome job. I really only go there for her because I am so picky. She does them thin, even, and super natural on my natural nails as a dip. Never any complaints.",
+            source: "Google Review",
+            stars: 5
+          },
+          {
+            name: "Ashley R.",
+            initials: "AR",
+            text: "I have been to Friendswood Nails & Spa recently and love their service! My most recent set of acrylics completed by Tiffany are my favorite nails I've ever had. Highly recommend!",
+            source: "Google Review",
+            stars: 5
+          },
+          {
+            name: "Brittany K.",
+            initials: "BK",
+            text: "From my first visit I knew I found my new salon. My manicures and pedicures are done well, last a long time, and done in a timely fashion. Truly the only nail salon I trust in this area — and I've tried many.",
+            source: "Yelp Review",
+            stars: 5
+          },
+          {
+            name: "Sarah T.",
+            initials: "ST",
+            text: "They were quick and efficient. Sweet and personable. Made sure I was happy with the color and shape before continuing. Would definitely go back.",
+            source: "Google Review",
+            stars: 5
+          },
+          {
+            name: "Monica L.",
+            initials: "ML",
+            text: "I absolutely loved my pedicure and my nails look perfect! The technician did an excellent job. The spa is very clean and the staff are friendly and talented.",
+            source: "Google Review",
+            stars: 5
+          },
+          {
+            name: "Danielle W.",
+            initials: "DW",
+            text: "I love this place — they are my go-to nail salon! I always call ahead and have zero wait time. Very flexible with timing and what you want. Extremely well priced and very clean.",
+            source: "Yelp Review",
+            stars: 5
+          }
+        ];
+
+        function starSVG() {
+          return '<svg viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>';
         }
 
-        var observer = null;
+        function buildReviews() {
+          var cards = REVIEWS.map(function (r) {
+            var stars = '';
+            for (var i = 0; i < r.stars; i++) stars += starSVG();
+            return (
+              '<div class="fws-review-card">' +
+                '<div class="fws-review-stars">' + stars + '</div>' +
+                '<p class="fws-review-text">\u201C' + r.text + '\u201D</p>' +
+                '<div class="fws-review-author">' +
+                  '<div class="fws-review-avatar">' + r.initials + '</div>' +
+                  '<div>' +
+                    '<div class="fws-review-name">' + r.name + '</div>' +
+                    '<div class="fws-review-source">' + r.source + '</div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>'
+            );
+          }).join('');
 
-        function inject() {
-          var sec = document.getElementById('booking');
+          return (
+            '<div class="fws-reviews-wrap">' +
+              '<div class="fws-reviews-eyebrow">' +
+                starSVG() + ' Client Reviews' +
+              '</div>' +
+              '<h2 class="fws-reviews-heading">WHAT OUR<br>CLIENTS SAY</h2>' +
+              '<p class="fws-reviews-sub">Real reviews from real clients in Friendswood & Houston.</p>' +
+              '<div class="fws-reviews-grid">' + cards + '</div>' +
+              '<div class="fws-reviews-badge">' +
+                '<strong>\u2605 4.6</strong> rating &nbsp;&bull;&nbsp; Verified Google &amp; Yelp reviews' +
+              '</div>' +
+            '</div>'
+          );
+        }
+
+        var revObserver = null;
+
+        function injectReviews() {
+          var sec = document.getElementById('reviews') ||
+                    document.getElementById('testimonials');
+
+          /* fallback: find a section whose heading text contains "review" or "testimonial" */
+          if (!sec) {
+            var sections = document.querySelectorAll('#root section');
+            for (var i = 0; i < sections.length; i++) {
+              var txt = sections[i].innerText || '';
+              if (/review|testimonial|what.*client|what.*people/i.test(txt)) {
+                sec = sections[i];
+                break;
+              }
+            }
+          }
+
           if (!sec) return false;
-          // already injected — iframe is present
-          if (sec.querySelector('iframe[src*="fresha"]')) return true;
-          sec.innerHTML = buildContent();
-          // guard against React wiping it on re-render
-          if (!observer && window.MutationObserver) {
-            observer = new MutationObserver(function () {
-              if (!sec.querySelector('iframe[src*="fresha"]')) {
-                sec.innerHTML = buildContent();
+          if (sec.querySelector('.fws-review-card')) return true;
+
+          sec.innerHTML = buildReviews();
+
+          if (!revObserver && window.MutationObserver) {
+            revObserver = new MutationObserver(function () {
+              if (!sec.querySelector('.fws-review-card')) {
+                sec.innerHTML = buildReviews();
               }
             });
-            observer.observe(sec, { childList: true });
+            revObserver.observe(sec, { childList: true });
           }
           return true;
         }
 
         var t = setInterval(function () {
-          if (inject()) clearInterval(t);
-        }, 150);
+          if (injectReviews()) clearInterval(t);
+        }, 200);
         setTimeout(function () { clearInterval(t); }, 15000);
+      })();
+    </script>
+
+    <!-- ── Remove "Online Booking" text labels from React-rendered DOM ── -->
+    <script>
+      (function () {
+        var STRIP_PATTERNS = [/online\s+booking/i, /book\s+online/i];
+
+        function stripBookingLabels(root) {
+          var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+          var nodes = [];
+          var node;
+          while ((node = walker.nextNode())) nodes.push(node);
+          nodes.forEach(function (n) {
+            STRIP_PATTERNS.forEach(function (re) {
+              if (re.test(n.nodeValue)) {
+                /* replace the label with a neutral "Appointments" */
+                n.nodeValue = n.nodeValue.replace(/online\s+booking/gi, 'Appointments').replace(/book\s+online/gi, 'Book Appointment');
+              }
+            });
+          });
+        }
+
+        var appRoot = document.getElementById('root');
+        if (!appRoot) return;
+
+        var mo = new MutationObserver(function (mutations) {
+          mutations.forEach(function (m) {
+            m.addedNodes.forEach(function (n) {
+              if (n.nodeType === 1) stripBookingLabels(n);
+            });
+          });
+        });
+        mo.observe(appRoot, { childList: true, subtree: true });
+
+        /* also run once after initial render */
+        setTimeout(function () { stripBookingLabels(appRoot); }, 1500);
       })();
     </script>
 
