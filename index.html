@@ -136,49 +136,66 @@
       <div class="fws-orb fws-orb-3"></div>
     </div>
     <script>
-      /* Fresha embedded booking widget */
+      /* Fresha embedded booking – iframe */
       (function () {
-        var FRESHA_URL = "https://www.fresha.com/book-now/friendswood-nails-spa-south-friendswood-drive-friendswood-7xn48r";
+        var FRESHA_SRC = "https://www.fresha.com/book-now/friendswood-nails-spa-south-friendswood-drive-friendswood-7xn48r";
 
-        function buildFreshaSection() {
-          return '<div style="position:absolute;top:0;right:0;width:384px;height:384px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,168,76,.06) 0%,transparent 70%);transform:translate(30%,-30%)"></div>'
-            + '<div style="position:absolute;bottom:0;left:0;width:320px;height:320px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,168,76,.04) 0%,transparent 70%);transform:translate(-30%,30%)"></div>'
-            + '<div style="position:relative;z-index:10;max-width:900px;margin:0 auto;padding:96px 24px 64px">'
-            +   '<div style="margin-bottom:48px">'
-            +     '<div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:#C9A84C">✦ Online Booking</div>'
-            +     '<h2 style="color:#fff;font-size:3rem;font-weight:700;letter-spacing:.05em;margin-bottom:12px;font-family:\'Playfair Display\',serif;line-height:1.1">BOOK YOUR<br>APPOINTMENT</h2>'
-            +     '<p style="font-size:1.125rem;color:#9CA3AF">Schedule your visit directly through our Fresha booking system below.</p>'
-            +   '</div>'
-            +   '<div style="border-radius:12px;overflow:hidden;border:1px solid rgba(201,168,76,.15);background:rgba(255,255,255,.02)">'
-            +     '<div id="fresha-widget" data-url="' + FRESHA_URL + '" data-type="booking" style="min-height:650px;width:100%"></div>'
-            +   '</div>'
-            +   '<p style="margin-top:20px;text-align:center;color:#9CA3AF;font-size:.875rem">'
-            +     'Prefer to call? <a href="tel:+18324819070" style="color:#C9A84C;text-decoration:underline">832-481-9070</a>'
-            +   '</p>'
-            + '</div>';
+        function buildContent() {
+          var html = '';
+          // decorative orbs matching site palette
+          html += '<div style="position:absolute;top:0;right:0;width:384px;height:384px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,168,76,.06) 0%,transparent 70%);transform:translate(30%,-30%)"></div>';
+          html += '<div style="position:absolute;bottom:0;left:0;width:320px;height:320px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,168,76,.04) 0%,transparent 70%);transform:translate(-30%,30%)"></div>';
+          html += '<div style="position:relative;z-index:10;max-width:960px;margin:0 auto;padding:80px 24px 64px">';
+          html +=   '<div style="margin-bottom:40px">';
+          html +=     '<div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:#C9A84C">';
+          html +=       '<svg width="12" height="12" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>';
+          html +=       ' Online Booking';
+          html +=     '</div>';
+          html +=     '<h2 style="color:#fff;font-size:2.75rem;font-weight:700;letter-spacing:.04em;margin:0 0 12px;font-family:\'Playfair Display\',Georgia,serif;line-height:1.1">BOOK YOUR<br>APPOINTMENT</h2>';
+          html +=     '<p style="font-size:1.1rem;color:#9CA3AF;margin:0">Book directly below — no phone call required.</p>';
+          html +=   '</div>';
+          html +=   '<div style="border-radius:14px;overflow:hidden;border:1px solid rgba(201,168,76,.2);box-shadow:0 0 40px rgba(201,168,76,.06)">';
+          html +=     '<iframe';
+          html +=       ' src="' + FRESHA_SRC + '"';
+          html +=       ' title="Book at Friendswood Nails &amp; Spa"';
+          html +=       ' width="100%"';
+          html +=       ' height="750"';
+          html +=       ' style="display:block;border:none;width:100%"';
+          html +=       ' loading="lazy"';
+          html +=       ' allow="payment; camera; microphone"';
+          html +=     '></iframe>';
+          html +=   '</div>';
+          html +=   '<p style="margin-top:18px;text-align:center;color:#9CA3AF;font-size:.85rem">';
+          html +=     'Prefer to call? <a href="tel:+18324819070" style="color:#C9A84C;text-decoration:underline">832-481-9070</a>';
+          html +=   '</p>';
+          html += '</div>';
+          return html;
         }
 
-        function loadFreshaScript() {
-          if (document.getElementById('fresha-loader')) return;
-          var s = document.createElement('script');
-          s.id = 'fresha-loader';
-          s.src = 'https://widget.fresha.com/fresha-widget-loader.js';
-          s.async = true;
-          document.head.appendChild(s);
-        }
+        var observer = null;
 
-        function injectFresha() {
+        function inject() {
           var sec = document.getElementById('booking');
           if (!sec) return false;
-          sec.innerHTML = buildFreshaSection();
-          loadFreshaScript();
+          // already injected — iframe is present
+          if (sec.querySelector('iframe[src*="fresha"]')) return true;
+          sec.innerHTML = buildContent();
+          // guard against React wiping it on re-render
+          if (!observer && window.MutationObserver) {
+            observer = new MutationObserver(function () {
+              if (!sec.querySelector('iframe[src*="fresha"]')) {
+                sec.innerHTML = buildContent();
+              }
+            });
+            observer.observe(sec, { childList: true });
+          }
           return true;
         }
 
-        var freshaTimer = setInterval(function () {
-          if (injectFresha()) clearInterval(freshaTimer);
+        var t = setInterval(function () {
+          if (inject()) clearInterval(t);
         }, 150);
-        setTimeout(function () { clearInterval(freshaTimer); }, 12000);
+        setTimeout(function () { clearInterval(t); }, 15000);
       })();
     </script>
 
