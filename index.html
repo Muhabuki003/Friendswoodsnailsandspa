@@ -136,6 +136,53 @@
       <div class="fws-orb fws-orb-3"></div>
     </div>
     <script>
+      /* Fresha embedded booking widget */
+      (function () {
+        var FRESHA_URL = "https://www.fresha.com/book-now/friendswood-nails-spa-south-friendswood-drive-friendswood-7xn48r";
+
+        function buildFreshaSection() {
+          return '<div style="position:absolute;top:0;right:0;width:384px;height:384px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,168,76,.06) 0%,transparent 70%);transform:translate(30%,-30%)"></div>'
+            + '<div style="position:absolute;bottom:0;left:0;width:320px;height:320px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,168,76,.04) 0%,transparent 70%);transform:translate(-30%,30%)"></div>'
+            + '<div style="position:relative;z-index:10;max-width:900px;margin:0 auto;padding:96px 24px 64px">'
+            +   '<div style="margin-bottom:48px">'
+            +     '<div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:#C9A84C">✦ Online Booking</div>'
+            +     '<h2 style="color:#fff;font-size:3rem;font-weight:700;letter-spacing:.05em;margin-bottom:12px;font-family:\'Playfair Display\',serif;line-height:1.1">BOOK YOUR<br>APPOINTMENT</h2>'
+            +     '<p style="font-size:1.125rem;color:#9CA3AF">Schedule your visit directly through our Fresha booking system below.</p>'
+            +   '</div>'
+            +   '<div style="border-radius:12px;overflow:hidden;border:1px solid rgba(201,168,76,.15);background:rgba(255,255,255,.02)">'
+            +     '<div id="fresha-widget" data-url="' + FRESHA_URL + '" data-type="booking" style="min-height:650px;width:100%"></div>'
+            +   '</div>'
+            +   '<p style="margin-top:20px;text-align:center;color:#9CA3AF;font-size:.875rem">'
+            +     'Prefer to call? <a href="tel:+18324819070" style="color:#C9A84C;text-decoration:underline">832-481-9070</a>'
+            +   '</p>'
+            + '</div>';
+        }
+
+        function loadFreshaScript() {
+          if (document.getElementById('fresha-loader')) return;
+          var s = document.createElement('script');
+          s.id = 'fresha-loader';
+          s.src = 'https://widget.fresha.com/fresha-widget-loader.js';
+          s.async = true;
+          document.head.appendChild(s);
+        }
+
+        function injectFresha() {
+          var sec = document.getElementById('booking');
+          if (!sec) return false;
+          sec.innerHTML = buildFreshaSection();
+          loadFreshaScript();
+          return true;
+        }
+
+        var freshaTimer = setInterval(function () {
+          if (injectFresha()) clearInterval(freshaTimer);
+        }, 150);
+        setTimeout(function () { clearInterval(freshaTimer); }, 12000);
+      })();
+    </script>
+
+    <script>
       (function () {
         var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (reduce) return;
