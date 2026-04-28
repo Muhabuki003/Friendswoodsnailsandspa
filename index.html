@@ -126,6 +126,88 @@
         #root img:hover { transform: none; filter: none; }
       }
 
+      /* ── Services Override ── */
+      .fws-services-wrap {
+        position: relative;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 80px 24px 72px;
+      }
+      .fws-services-eyebrow {
+        font-size: 10px;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: #C9A84C;
+        margin-bottom: 14px;
+      }
+      .fws-services-heading {
+        color: #fff;
+        font-size: clamp(2rem, 5vw, 2.75rem);
+        font-weight: 700;
+        letter-spacing: .04em;
+        font-family: 'Playfair Display', Georgia, serif;
+        line-height: 1.1;
+        margin: 0 0 8px;
+      }
+      .fws-services-sub {
+        color: #9CA3AF;
+        font-size: 1rem;
+        margin: 0 0 48px;
+      }
+      .fws-services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 18px;
+      }
+      .fws-service-card {
+        background: rgba(255,255,255,.03);
+        border: 1px solid rgba(201,168,76,.15);
+        border-radius: 14px;
+        padding: 26px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        transition: border-color 300ms ease, box-shadow 300ms ease, transform 300ms ease;
+      }
+      .fws-service-card:hover {
+        border-color: rgba(201,168,76,.4);
+        box-shadow: 0 0 28px rgba(201,168,76,.08);
+        transform: translateY(-2px);
+      }
+      .fws-service-icon {
+        font-size: 1.6rem;
+        line-height: 1;
+      }
+      .fws-service-name {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: .02em;
+      }
+      .fws-service-desc {
+        color: #9CA3AF;
+        font-size: .85rem;
+        line-height: 1.55;
+      }
+      .fws-service-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 4px;
+      }
+      .fws-service-tag {
+        font-size: .72rem;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: #C9A84C;
+        background: rgba(201,168,76,.08);
+        border: 1px solid rgba(201,168,76,.2);
+        border-radius: 999px;
+        padding: 3px 10px;
+      }
+
       /* ── Real Reviews Override ── */
       .fws-reviews-wrap {
         position: relative;
@@ -229,6 +311,143 @@
       <div class="fws-orb fws-orb-3"></div>
     </div>
 
+    <!-- ── Services Injector ── -->
+    <script>
+      (function () {
+        var SERVICES = [
+          {
+            icon: '💅',
+            name: 'Acrylic Nails',
+            desc: 'Full sets and fills with precision shaping. Custom lengths, natural overlays, and ombre finishes available.',
+            tags: ['Full Set', 'Fill', 'Ombre']
+          },
+          {
+            icon: '✨',
+            name: 'Dip Powder',
+            desc: 'Long-lasting dip powder nails that stay chip-free for weeks. Natural finish, no UV lamp required.',
+            tags: ['Natural Nails', 'Long-Lasting', 'No UV']
+          },
+          {
+            icon: '💎',
+            name: 'Gel Nails',
+            desc: 'Gel builder, gel extensions, shellac, and hybrid gel — glossy, flexible, and durable.',
+            tags: ['Gel Builder', 'Extensions', 'Shellac', 'Hybrid']
+          },
+          {
+            icon: '🎨',
+            name: 'Nail Art',
+            desc: 'Custom designs from your inspo pics. Our techs replicate detailed looks with precision.',
+            tags: ['Custom Design', 'Inspo Pics', 'Detailed']
+          },
+          {
+            icon: '🤲',
+            name: 'Manicure',
+            desc: 'Classic and spa manicures for women and men. Cuticle care, shaping, and polish included.',
+            tags: ['Classic', 'Spa', "Men's"]
+          },
+          {
+            icon: '🦶',
+            name: 'Pedicure',
+            desc: 'Relaxing pedicures with spa upgrade options. Callus removal, massage, and gel polish available.',
+            tags: ['Classic', 'Spa Upgrade', 'Fish Pedi', "Men's"]
+          },
+          {
+            icon: '🌿',
+            name: 'Facials',
+            desc: 'Rejuvenating facial treatments tailored to your skin. Deep cleansing and hydration in a relaxing setting.',
+            tags: ['Deep Cleanse', 'Hydrating']
+          },
+          {
+            icon: '👁️',
+            name: 'Lashes',
+            desc: 'Lash extensions and lash lift & tint to enhance your natural lashes. Wake up effortlessly beautiful.',
+            tags: ['Extensions', 'Lash Lift', 'Tint']
+          },
+          {
+            icon: '💆',
+            name: 'Head Spa',
+            desc: 'A deeply relaxing scalp treatment combining massage and nourishing care for healthy hair and stress relief.',
+            tags: ['Scalp Massage', 'Nourishing']
+          },
+          {
+            icon: '🌸',
+            name: 'Brow Tint',
+            desc: 'Define and shape your brows with professional tinting for a bold, polished look that lasts weeks.',
+            tags: ['Tinting', 'Shaping']
+          },
+          {
+            icon: '⭐',
+            name: 'Permanent Makeup',
+            desc: 'Wake up with flawless brows and defined features. Long-lasting cosmetic tattooing by skilled professionals.',
+            tags: ['Brows', 'Long-Lasting', 'Professional']
+          }
+        ];
+
+        function buildServices() {
+          var cards = SERVICES.map(function (s) {
+            var tags = s.tags.map(function (t) {
+              return '<span class="fws-service-tag">' + t + '</span>';
+            }).join('');
+            return (
+              '<div class="fws-service-card">' +
+                '<div class="fws-service-icon">' + s.icon + '</div>' +
+                '<div class="fws-service-name">' + s.name + '</div>' +
+                '<div class="fws-service-desc">' + s.desc + '</div>' +
+                '<div class="fws-service-tags">' + tags + '</div>' +
+              '</div>'
+            );
+          }).join('');
+
+          return (
+            '<div class="fws-services-wrap">' +
+              '<div class="fws-services-eyebrow">Our Services</div>' +
+              '<h2 class="fws-services-heading">EVERYTHING<br>WE OFFER</h2>' +
+              '<p class="fws-services-sub">Professional beauty &amp; spa services in Friendswood, TX.</p>' +
+              '<div class="fws-services-grid">' + cards + '</div>' +
+            '</div>'
+          );
+        }
+
+        var svcObserver = null;
+
+        function injectServices() {
+          var sec = document.getElementById('services') ||
+                    document.getElementById('menu');
+
+          if (!sec) {
+            var sections = document.querySelectorAll('#root section');
+            for (var i = 0; i < sections.length; i++) {
+              var txt = sections[i].innerText || '';
+              if (/service|treatment|what we (do|offer)|menu/i.test(txt)) {
+                sec = sections[i];
+                break;
+              }
+            }
+          }
+
+          if (!sec) return false;
+          if (sec.querySelector('.fws-service-card')) return true;
+
+          sec.innerHTML = buildServices();
+
+          if (!svcObserver && window.MutationObserver) {
+            svcObserver = new MutationObserver(function () {
+              if (!sec.querySelector('.fws-service-card')) {
+                sec.innerHTML = buildServices();
+              }
+            });
+            svcObserver.observe(sec, { childList: true });
+          }
+          return true;
+        }
+
+        var t = setInterval(function () {
+          if (injectServices()) clearInterval(t);
+        }, 200);
+        setTimeout(function () { clearInterval(t); }, 15000);
+      })();
+    </script>
+
     <!-- ── Real Reviews Injector ── -->
     <script>
       (function () {
@@ -304,7 +523,7 @@
             '<div class="fws-reviews-wrap">' +
               '<div class="fws-reviews-eyebrow">Client Reviews</div>' +
               '<h2 class="fws-reviews-heading">WHAT OUR<br>CLIENTS SAY</h2>' +
-              '<p class="fws-reviews-sub">Real reviews from real clients in Friendswood & Houston.</p>' +
+              '<p class="fws-reviews-sub">Real reviews from real clients in Friendswood &amp; Houston.</p>' +
               '<div class="fws-reviews-grid">' + cards + '</div>' +
               '<div class="fws-reviews-badge">' +
                 '<strong>\u2605 4.6</strong> rating &nbsp;&bull;&nbsp; Verified Google &amp; Yelp reviews' +
@@ -319,7 +538,6 @@
           var sec = document.getElementById('reviews') ||
                     document.getElementById('testimonials');
 
-          /* fallback: find a section whose heading text contains "review" or "testimonial" */
           if (!sec) {
             var sections = document.querySelectorAll('#root section');
             for (var i = 0; i < sections.length; i++) {
@@ -347,10 +565,10 @@
           return true;
         }
 
-        var t = setInterval(function () {
-          if (injectReviews()) clearInterval(t);
+        var t2 = setInterval(function () {
+          if (injectReviews()) clearInterval(t2);
         }, 200);
-        setTimeout(function () { clearInterval(t); }, 15000);
+        setTimeout(function () { clearInterval(t2); }, 15000);
       })();
     </script>
 
@@ -367,7 +585,6 @@
           nodes.forEach(function (n) {
             STRIP_PATTERNS.forEach(function (re) {
               if (re.test(n.nodeValue)) {
-                /* replace the label with a neutral "Appointments" */
                 n.nodeValue = n.nodeValue.replace(/online\s+booking/gi, 'Appointments').replace(/book\s+online/gi, 'Book Appointment');
               }
             });
@@ -386,7 +603,6 @@
         });
         mo.observe(appRoot, { childList: true, subtree: true });
 
-        /* also run once after initial render */
         setTimeout(function () { stripBookingLabels(appRoot); }, 1500);
       })();
     </script>
